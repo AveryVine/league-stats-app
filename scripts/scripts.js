@@ -64,7 +64,7 @@ function getDataForChampion(champion) {
     var playRate = championGGData[champion].playRate;
     var banRate = championGGData[champion].banRate;
     var banAdvantage = ((winRate - 0.5) * playRate / (1 - banRate));
-    return [champion,
+    return [ddragonData.data[champion].name,
         formatPercentage(winRate, 2),
         formatPercentage(playRate, 2),
         formatPercentage(banRate, 3),
