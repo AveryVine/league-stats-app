@@ -5,11 +5,7 @@ var ddragonData = {};
 var championGGData = {};
 
 $(document).ready(function() {
-    getDDragonData();
-});
-
-function updateChampionTable() {
-    var table = $("#championTable").DataTable({
+    $("#championTable").DataTable({
         "columns": [
             null,
             {"orderSequence": ["desc", "asc"]},
@@ -17,6 +13,12 @@ function updateChampionTable() {
             {"orderSequence": ["desc", "asc"]},
             {"orderSequence": ["desc", "asc"]}]
     });
+    getDDragonData();
+});
+
+function updateChampionTable() {
+    var table = $("#championTable").DataTable();
+    table.clear();
     for (champion in championGGData) {
         console.log("Adding champion: " + champion);
         var championData = getDataForChampion(champion);
@@ -26,25 +28,26 @@ function updateChampionTable() {
 }
 
 function getDDragonData() {
-    if ($.isEmptyObject(ddragonData)) {
-        console.log("Retrieving data from DDragon...");
-        $.get("http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json", function(data) {
-            console.log("Retrieved data from DDragon");
-            ddragonData = data;
-            getChampionGGData();
-        });
-    }
+    console.log("Retrieving data from DDragon...");
+    var url = "http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json";
+    $.get(url, function(data) {
+        console.log("Retrieved data from DDragon");
+        ddragonData = data;
+        getChampionGGData();
+    });
 }
 
 function getChampionGGData() {
-    if ($.isEmptyObject(championGGData)) {
-        console.log("Retrieving data from ChampionGG...");
-        $.get("http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2", function(data) {
-            console.log("Retrieved data from ChampionGG");
-            prepareChampionGGData(data);
-            updateChampionTable();
-        });
+    console.log("Retrieving data from ChampionGG...");
+    var url = "http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2";
+    if (elo == "PLATINUM+") {
+        url.replace("elo=PLATINUM+&", "");
     }
+    $.get(url, function(data) {
+        console.log("Retrieved data from ChampionGG");
+        prepareChampionGGData(data);
+        updateChampionTable();
+    });
 }
 
 function prepareChampionGGData(data) {
@@ -74,4 +77,10 @@ function getDataForChampion(champion) {
 
 function formatPercentage(value, decimals) {
     return (value * 100).toFixed(decimals) + "%";
+}
+
+function updateElo(newElo) {
+    console.log("Updating elo to: " + newElo);
+    elo = newElo;
+    getChampionGGData();
 }

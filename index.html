@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>League of Stats</title>
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script type="text/javascript" src="scripts/jquery.js"></script>
-    <script type="text/javascript" src="DataTables/datatables.min.js"></script>
-    <script type="text/javascript" src="scripts/scripts.js"></script>
-    <script>if (window.module) module = window.module;</script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
-  </head>
-  <body>
-    <h1>Champions</h1>
-    <table id="championTable" class="row-border display hover">
-        <thead>
-            <tr>
-                <th>Champion</th>
-                <th>Win Rate</th>
-                <th>Play Rate</th>
-                <th>Ban Rate</th>
-                <th>Ban Advantage</th>
-            </tr>
-        </thead>
-        <tbody>
+    <head>
+        <meta charset="UTF-8">
+        <title>League of Stats</title>
+        <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        <script type="text/javascript" src="scripts/jquery.js"></script>
+        <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+        <script type="text/javascript" src="scripts/scripts.js"></script>
+        <script>if (window.module) module = window.module;</script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
+    </head>
+    <body>
+        <h1>Champions</h1>
+        <p>
+            Elo Selection:
+            <select onchange="updateElo(this.value.toUpperCase())">
+                <option>Bronze</option>
+                <option>Silver</option>
+                <option>Gold</option>
+                <option selected>Platinum</option>
+                <option>Platinum+</option>
+            </select>
+        </p>
+        <table id="championTable" class="row-border display hover">
+            <thead>
+                <tr>
+                    <th>Champion</th>
+                    <th>Win Rate</th>
+                    <th>Play Rate</th>
+                    <th>Ban Rate</th>
+                    <th>Ban Advantage</th>
+                </tr>
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
-  </body>
+            </tbody>
+        </table>
+    </body>
 </html>
