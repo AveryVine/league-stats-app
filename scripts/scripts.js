@@ -5,11 +5,7 @@ var ddragonData = {};
 var championGGData = {};
 
 $(document).ready(function() {
-    getDDragonData();
-});
-
-function updateChampionTable() {
-    var table = $("#championTable").DataTable({
+    $("#championTable").DataTable({
         "columns": [
             null,
             {"orderSequence": ["desc", "asc"]},
@@ -17,6 +13,12 @@ function updateChampionTable() {
             {"orderSequence": ["desc", "asc"]},
             {"orderSequence": ["desc", "asc"]}]
     });
+    getDDragonData();
+});
+
+function updateChampionTable() {
+    var table = $("#championTable").DataTable();
+    table.clear();
     for (champion in championGGData) {
         console.log("Adding champion: " + champion);
         var championData = getDataForChampion(champion);
@@ -37,14 +39,12 @@ function getDDragonData() {
 }
 
 function getChampionGGData() {
-    if ($.isEmptyObject(championGGData)) {
-        console.log("Retrieving data from ChampionGG...");
-        $.get("http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2", function(data) {
-            console.log("Retrieved data from ChampionGG");
-            prepareChampionGGData(data);
-            updateChampionTable();
-        });
-    }
+    console.log("Retrieving data from ChampionGG...");
+    $.get("http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2", function(data) {
+        console.log("Retrieved data from ChampionGG");
+        prepareChampionGGData(data);
+        updateChampionTable();
+    });
 }
 
 function prepareChampionGGData(data) {
@@ -74,4 +74,15 @@ function getDataForChampion(champion) {
 
 function formatPercentage(value, decimals) {
     return (value * 100).toFixed(decimals) + "%";
+}
+
+function updateElo(newElo) {
+    console.log("Updating elo");
+    if (newElo == "PLATINUM+") {
+        elo = "PLATINUM,DIAMOND,MASTER,CHALLENGER"
+    }
+    else {
+        elo = newElo;
+    }
+    getChampionGGData();
 }
