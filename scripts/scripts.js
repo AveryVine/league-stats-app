@@ -28,19 +28,22 @@ function updateChampionTable() {
 }
 
 function getDDragonData() {
-    if ($.isEmptyObject(ddragonData)) {
-        console.log("Retrieving data from DDragon...");
-        $.get("http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json", function(data) {
-            console.log("Retrieved data from DDragon");
-            ddragonData = data;
-            getChampionGGData();
-        });
-    }
+    console.log("Retrieving data from DDragon...");
+    var url = "http://ddragon.leagueoflegends.com/cdn/6.24.1/data/en_US/champion.json";
+    $.get(url, function(data) {
+        console.log("Retrieved data from DDragon");
+        ddragonData = data;
+        getChampionGGData();
+    });
 }
 
 function getChampionGGData() {
     console.log("Retrieving data from ChampionGG...");
-    $.get("http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2", function(data) {
+    var url = "http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=245e4f76b33c6b217115e7d14e7f00f2";
+    if (elo == "PLATINUM+") {
+        url.replace("elo=PLATINUM+&", "");
+    }
+    $.get(url, function(data) {
         console.log("Retrieved data from ChampionGG");
         prepareChampionGGData(data);
         updateChampionTable();
@@ -77,12 +80,7 @@ function formatPercentage(value, decimals) {
 }
 
 function updateElo(newElo) {
-    console.log("Updating elo");
-    if (newElo == "PLATINUM+") {
-        elo = "PLATINUM,DIAMOND,MASTER,CHALLENGER"
-    }
-    else {
-        elo = newElo;
-    }
+    console.log("Updating elo to: " + newElo);
+    elo = newElo;
     getChampionGGData();
 }
