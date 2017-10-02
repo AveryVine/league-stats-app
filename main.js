@@ -1,6 +1,8 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
+const electron = require('electron')
+const ipc = electron.ipcMain
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -29,6 +31,18 @@ function createWindow () {
   })
 }
 
+ipc.on('newChampionDetailWindow', function(event, championId, championName) {
+  console.log("Champion ID received: " + championId)
+  let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
+  let url = "http://gameinfo.na.leagueoflegends.com/en/game-info/champions/" + championName.toLowerCase()
+  console.log("Loading URL: " + url)
+  child.loadURL(url)
+  child.once('ready-to-show', () => {
+    child.show()
+    win.blur()
+  })
+})
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -36,11 +50,7 @@ app.on('ready', createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
     app.quit()
-  }
 })
 
 app.on('activate', () => {

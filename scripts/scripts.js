@@ -1,4 +1,5 @@
 require('jquery');
+const ipc = require('electron').ipcRenderer;
 
 var elo = "PLATINUM";
 var ddragonData = {};
@@ -11,7 +12,11 @@ $(document).ready(function() {
             {"orderSequence": ["desc", "asc"]},
             {"orderSequence": ["desc", "asc"]},
             {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]}]
+            {"orderSequence": ["desc", "asc"]}
+        ], "select": true
+    });
+    $("#championTable tbody").on("click", "tr", function() {
+        championClicked(this);
     });
     getDDragonData();
 });
@@ -23,7 +28,6 @@ function updateChampionTable() {
         console.log("Adding champion: " + champion);
         var championData = getDataForChampion(champion);
         table.row.add(championData).order([4, 'desc']).draw();
-        // table.row.add([ddragonData.data[champion].name, null, null, null, null]).draw();
     }
 }
 
@@ -83,4 +87,20 @@ function updateElo(newElo) {
     console.log("Updating elo to: " + newElo);
     elo = newElo;
     getChampionGGData();
+}
+
+function championClicked(data) {
+    var championNameFormatted = $("#championTable").DataTable().row(data).data()[0];
+    var championId = 0;
+    var championName = "";
+    for (champion in ddragonData.data) {
+        if (ddragonData.data[champion].name == championNameFormatted) {
+            championId = ddragonData.data[champion].key;
+            championName = champion;
+            break;
+        }
+    }
+    console.log("Champion clicked: " + championNameFormatted + " (" + championId + ")");
+
+    ipc.send('newChampionDetailWindow', championId, championName);
 }

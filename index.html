@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Champions</h1>
-        <p>
+        <label>
             Elo Selection:
             <select onchange="updateElo(this.value.toUpperCase())">
                 <option>Bronze</option>
@@ -22,9 +22,9 @@
                 <option selected>Platinum</option>
                 <option>Platinum+</option>
             </select>
-        </p>
+        </label>
         <table id="championTable" class="row-border display hover">
-            <thead>
+            <thead class="header">
                 <tr>
                     <th>Champion</th>
                     <th>Win Rate</th>
