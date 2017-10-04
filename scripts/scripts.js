@@ -2,6 +2,8 @@ require('jquery');
 const ipc = require('electron').ipcRenderer;
 
 var elo = "PLATINUM";
+var region = "NA";
+var regions = ["NA", "EUNE", "EUW", "KR"];
 var ddragonData = {};
 var championGGData = {};
 
@@ -15,9 +17,17 @@ $(document).ready(function() {
             {"orderSequence": ["desc", "asc"]}
         ], "select": true
     });
+
     $("#championTable tbody").on("click", "tr", function() {
         championClicked(this);
     });
+
+    $("#brand").click(function() {
+        loadPage("about", null, null);
+    });
+
+    loadRegionsIntoList();
+
     getDDragonData();
 });
 
@@ -102,5 +112,28 @@ function championClicked(data) {
     }
     console.log("Champion clicked: " + championNameFormatted + " (" + championId + ")");
 
-    ipc.send('newChampionDetailWindow', championId, championName);
+    loadPage('newChampionDetailWindow', championId, championName);
+}
+
+function loadRegionsIntoList() {
+    var dropdownList = $("#nonSelectedRegions");
+    for (i in regions) {
+        if (regions[i] != region) {
+            var newRegion = $('<li><a href="#">' + regions[i] + '</a></li>');
+            newRegion.click(function() {
+                region = $(this).text();
+                dropdownList.empty();
+                loadRegionsIntoList();
+            });
+            dropdownList.append(newRegion);
+        }
+        else {
+            $("#selectedRegion").text(regions[i]);
+        }
+    }
+}
+
+function loadPage(page, param1, param2) {
+    console.log("Sending load page event: " + page);
+    ipc.send(page, param1, param2);
 }
