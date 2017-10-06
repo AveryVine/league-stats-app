@@ -10,7 +10,7 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 1200, height: 750})
+  win = new BrowserWindow({width: 1200, height: 750, minWidth: 768, minHeight: 400})
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -34,9 +34,33 @@ function createWindow () {
 ipc.on('newChampionDetailWindow', function(event, championId, championName) {
   console.log("Champion ID received: " + championId)
   let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
-  let url = "http://gameinfo.na.leagueoflegends.com/en/game-info/champions/" + championName.toLowerCase()
-  console.log("Loading URL: " + url)
-  child.loadURL(url)
+  let childUrl = "http://gameinfo.na.leagueoflegends.com/en/game-info/champions/" + championName.toLowerCase()
+  console.log("Loading URL: " + childUrl)
+  child.loadURL(childUrl)
+  child.once('ready-to-show', () => {
+    child.show()
+    win.blur()
+  })
+})
+
+ipc.on('Avery Vine', function() {
+  console.log("Developer received: Avery Vine")
+  let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
+  let childUrl = "http://www.averyvine.com"
+  console.log("Loading URL: " + childUrl)
+  child.loadURL(childUrl)
+  child.once('ready-to-show', () => {
+    child.show()
+    win.blur()
+  })
+})
+
+ipc.on('Kirk Yuan', function() {
+  console.log("Developer received: Kirk Yuan")
+  let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
+  let childUrl = "http://www.kirkyuan.com"
+  console.log("Loading URL: " + childUrl)
+  child.loadURL(childUrl)
   child.once('ready-to-show', () => {
     child.show()
     win.blur()
