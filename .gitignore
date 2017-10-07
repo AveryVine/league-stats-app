@@ -59,3 +59,6 @@ typings/
 
 # API Keys
 apiKeys.json
+
+# Mac Stuff
+.DS_Store
