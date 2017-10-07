@@ -6,47 +6,55 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
         <script type="text/javascript" src="DataTables/datatables.min.js"></script>
         <script type="text/javascript" src="scripts/scripts.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
         <script>if (window.module) module = window.module;</script>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
+        <link rel="stylesheet" type="text/css" href="FontAwesome/css/font-awesome.min.css">
     </head>
     <body>
-        <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top">
+        <nav id="navbar" class="navbar navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
                 <div id="brand" class="navbar-header">
-                    <a class="navbar-brand" href="#">League Stats</a>
+                    <a class="navbar-brand" data-toggle="collapse" href="#aboutSection">League Stats</a>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Bans</a></li>
-                    <!-- <li><a href="#">Page 1</a></li>
-                    <li><a href="#">Page 2</a></li> -->
-                </ul>
-                <form class="navbar-form navbar-right">
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="#">Bans</a>
+                    <!-- <a class="nav-item nav-link" href="#">Page 1</a>
+                    <a class="nav-item nav-link" href="#">Page 2</a> -->
+                </div>
+                <form class="form-inline">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <div class="btn-group">
-                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span id="selectedRegion">...</span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul id="nonSelectedRegions" class="dropdown-menu dropdown-menu-left"></ul>
-                            </div>
-                        </span>
-                        <input type="text" class="form-control" placeholder="Summoner Name">
-                        <div class="input-group-btn">
-                            //----------CHANGE THIS BUTTON SO IT DOESN'T REFRESH THE PAGE UPON SUBMISSION----------
-                            <button class="btn btn-primary" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span id="selectedRegion">...</span>
+                                <span class="caret"></span>
                             </button>
-                        </div>
+                            <div id="nonSelectedRegions" class="dropdown-menu"></div>
+                        </span>
+                        <input id="summonerSearch" type="text" placeholder="Summoner Name">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
                     </div>
                 </form>
             </div>
         </nav>
+        <div class="collapse" id="aboutSection">
+            <div id="aboutCard" class="card text-black bg-light">
+                <div class="card-header">About</div>
+                <div class="card-body">
+                    <p>This app was inspired by Callan Jessiman, who graciously created the original application that calculated ban advantage for your elo.</p>
+                    <label class="card-link">Developers: </label>
+                    <a href="#" class="card-link developer" id="devAvery">Avery Vine</a>
+                    <a href="#" class="card-link developer" id="devKirk">Kirk Yuan</a>
+                </div>
+            </div>
+        </div>
         <div id="headerStuffContainer" class="container">
             <h1>Champions</h1>
             <label>
