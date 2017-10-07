@@ -3,7 +3,7 @@
 }
 
 body {
-    padding-top: 50px;
+    padding-top: 70px;
 }
 
 @media (max-width: 300px) {
@@ -31,4 +31,14 @@ body {
         padding-top: 10px;
         padding-bottom: 10px;
     }
+}
+
+#aboutCard {
+    max-width: 30rem;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#summonerSearch {
+    padding-left: 10px;
 }

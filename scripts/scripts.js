@@ -24,9 +24,20 @@ $(document).ready(function() {
         championClicked(this);
     });
 
-    $("#brand").click(function() {
-        loadPage("about", null, null);
+    $(".developer").each(function() {
+        $(this).on("click", function() {
+            console.log("Clicked: " + $(this).text());
+            loadPage($(this).text());
+        });
     });
+
+    // $("#devAvery").on("click", function() {
+    //     loadPage("devAvery");
+    // });
+
+    // $("#devKirk").on("click", function() {
+    //     loadPage("devKirk");
+    // });
 
     loadRegionsIntoList();
     loadApiKeys();
@@ -130,7 +141,7 @@ function loadRegionsIntoList() {
     var dropdownList = $("#nonSelectedRegions");
     for (i in regions) {
         if (regions[i] != region) {
-            var newRegion = $('<li><a href="#">' + regions[i] + '</a></li>');
+            var newRegion = $('<a class = "dropdown-item" href="#">' + regions[i] + '</a>');
             newRegion.click(function() {
                 region = $(this).text();
                 dropdownList.empty();
