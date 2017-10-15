@@ -18,31 +18,32 @@
     </head>
     <body>
         <nav id="navbar" class="navbar navbar-dark bg-dark fixed-top">
-            <div class="container-fluid">
-                <div id="brand" class="navbar-header">
-                    <a class="navbar-brand" data-toggle="collapse" href="#aboutSection">League Stats</a>
-                </div>
-                <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="#">Bans</a>
-                    <!-- <a class="nav-item nav-link" href="#">Page 1</a>
-                    <a class="nav-item nav-link" href="#">Page 2</a> -->
-                </div>
-                <form class="form-inline">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                                <span id="selectedRegion">...</span>
-                                <span class="caret"></span>
-                            </button>
-                            <div id="nonSelectedRegions" class="dropdown-menu"></div>
-                        </span>
-                        <input id="summonerSearch" type="text" placeholder="Summoner Name">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
-                </form>
+            <div id="brand" class="navbar-header">
+                <a class="navbar-brand" data-toggle="collapse" href="#aboutSection">League Stats</a>
             </div>
+            <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="#">Bans</a>
+                <!-- <a class="nav-item nav-link" href="#">Page 1</a>
+                <a class="nav-item nav-link" href="#">Page 2</a> -->
+            </div>
+            <span class="navbar-text" id="patch-info">
+                Patch: <span id="patchData">N/A</span>&nbsp&nbsp
+            </span>
+            <form class="form-inline">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                            <span id="selectedRegion">...</span>
+                            <span class="caret"></span>
+                        </button>
+                        <div id="nonSelectedRegions" class="dropdown-menu"></div>
+                    </span>
+                    <input id="summonerSearch" type="text" placeholder="Summoner Name">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
         </nav>
         <div class="collapse" id="aboutSection">
             <div id="aboutCard" class="card text-black bg-light">
