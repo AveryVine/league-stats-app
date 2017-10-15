@@ -31,6 +31,19 @@ $(document).ready(function() {
         });
     });
 
+    $("#summonerSearch").submit(function(e) {
+        e.preventDefault();
+        var summonerName = $("#summonerName").text();
+        console.log("Searching for Summoner: " + summonerName);
+        formattedSummonerName = encodeURIComponent(summonerName)
+        var url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + formattedSummonerName + "?api_key=" + riotApiKey;
+        $.get(url, function(data) {
+            console.log("Retrieved summoner: " + data.name);
+        }).fail(function(error) {
+            alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        });
+    });
+
     // $("#devAvery").on("click", function() {
     //     loadPage("devAvery");
     // });
