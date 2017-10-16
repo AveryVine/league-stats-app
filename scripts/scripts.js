@@ -1,6 +1,8 @@
 require('jquery');
 const ipc = require('electron').ipcRenderer;
 
+const bypassStaticData = false;
+const bypassChampionGGData = false;
 var elo = "PLATINUM";
 var region = "NA";
 var regions = ["NA", "EUNE", "EUW", "KR"];
@@ -31,14 +33,6 @@ $(document).ready(function() {
         });
     });
 
-    // $("#devAvery").on("click", function() {
-    //     loadPage("devAvery");
-    // });
-
-    // $("#devKirk").on("click", function() {
-    //     loadPage("devKirk");
-    // });
-
     loadRegionsIntoList();
     loadApiKeys();
 });
@@ -63,13 +57,22 @@ function updateChampionTable() {
     }
 }
 
+function updatePatch(patch) {
+    $("#patchData").text(patch);
+}
+
 function getStaticData() {
     console.log("Retrieving static data...");
     var url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=info&dataById=false&api_key=" + riotApiKey;
-    $.get(url, function(data) {
+    $.get(url, function(data, status) {
         console.log("Retrieved static data");
         staticData = data;
         getChampionGGData();
+    }).fail(function(error) {
+        alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        if (bypassStaticData) {
+            getChampionGGData();
+        }
     });
 }
 
@@ -81,8 +84,14 @@ function getChampionGGData() {
     }
     $.get(url, function(data) {
         console.log("Retrieved data from ChampionGG");
+        updatePatch(data[0].patch);
         prepareChampionGGData(data);
         updateChampionTable();
+    }).fail(function(error) {
+        alert("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+        if (bypassChampionGGData) {
+            updateChampionTable();
+        }
     });
 }
 
