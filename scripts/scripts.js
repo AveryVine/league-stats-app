@@ -15,11 +15,12 @@ $(document).ready(function() {
     $("#championTable").DataTable({
         "columns": [
             null,
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]}
-        ], "select": true
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] }
+        ],
+        "select": true
     });
 
     $("#championTable tbody").on("click", "tr", function() {
@@ -33,7 +34,6 @@ $(document).ready(function() {
         });
     });
 
-<<<<<<< HEAD
     $("#summonerSearch").submit(function(e) {
         e.preventDefault();
         var summonerName = $("#summonerName").val();
@@ -57,8 +57,6 @@ $(document).ready(function() {
     //     loadPage("devKirk");
     // });
 
-=======
->>>>>>> 2636868ec29257af9fa5f7166b08ceaffd4968e1
     loadRegionsIntoList();
     loadApiKeys();
 });
@@ -183,8 +181,7 @@ function loadRegionsIntoList() {
                 loadRegionsIntoList();
             });
             dropdownList.append(newRegion);
-        }
-        else {
+        } else {
             $("#selectedRegion").text(regions[i]);
         }
     }
