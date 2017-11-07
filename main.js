@@ -43,22 +43,16 @@ ipc.on('newChampionDetailWindow', function(event, championId, championName) {
   })
 })
 
-ipc.on('Avery Vine', function() {
-  console.log("Developer received: Avery Vine")
+ipc.on('developer', function(event, developer) {
+  console.log("Developer received: " + developer)
   let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
-  let childUrl = "http://www.averyvine.com"
-  console.log("Loading URL: " + childUrl)
-  child.loadURL(childUrl)
-  child.once('ready-to-show', () => {
-    child.show()
-    win.blur()
-  })
-})
-
-ipc.on('Kirk Yuan', function() {
-  console.log("Developer received: Kirk Yuan")
-  let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
-  let childUrl = "http://www.kirkyuan.com"
+  var childUrl = "";
+  if (developer == "Avery Vine") {
+    childUrl = "http://www.averyvine.com"
+  }
+  else if (developer == "Kirk Yuan") {
+    childUrl = "http://www.kirkyuan.com"
+  }
   console.log("Loading URL: " + childUrl)
   child.loadURL(childUrl)
   child.once('ready-to-show', () => {

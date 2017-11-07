@@ -39,6 +39,12 @@ body {
     margin-bottom: 10px;
 }
 
-#summonerSearch {
+#summonerName {
     padding-left: 10px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+#summonerSubmit {
+    margin-top: -1px;
 }

@@ -30,32 +30,38 @@ $(document).ready(function() {
     $(".developer").each(function() {
         $(this).on("click", function() {
             console.log("Clicked: " + $(this).text());
-            loadPage($(this).text());
+            loadPage("developer", $(this).text());
         });
     });
 
     $("#summonerSearch").submit(function(e) {
         e.preventDefault();
         var summonerName = $("#summonerName").val();
-        console.log("Searching for Summoner: " + summonerName);
-        var formattedSummonerName = encodeURIComponent(summonerName);
-        console.log(formattedSummonerName);
-        var url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + formattedSummonerName + "?api_key=" + riotApiKey;
-        $.get(url, function(data) {
-            console.log("Retrieved summoner: " + data.name);
-            alert("Sorry, " + data.name + "! This feature hasn't been implemented yet.");
-        }).fail(function(error) {
-            alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-        });
+        if (summonerName == null || summonerName == "") {
+            console.log("Validation failed for summoner name: " + summonerName);
+            $("#summonerName").addClass("is-invalid");
+            alert("Please enter a valid summoner name");
+        }
+        else {
+            console.log("Searching for Summoner: " + summonerName);
+            var formattedSummonerName = encodeURIComponent(summonerName);
+            console.log(formattedSummonerName);
+            var url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + formattedSummonerName + "?api_key=" + riotApiKey;
+            $.get(url, function(data) {
+                console.log("Retrieved summoner: " + data.name + " (account id " + data.accountId + ")");
+                loadPage("summonerSearch", data.name, data.accountId);
+            }).fail(function(error) {
+                if (error.responseJSON.status.status_code == "404") {
+                    console.log("Validation failed for summoner name: " + summonerName);
+                    $("#summonerName").addClass("is-invalid");
+                    alert("Please enter a valid summoner name");
+                }
+                else {
+                    alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+                }
+            });
+        }
     });
-
-    // $("#devAvery").on("click", function() {
-    //     loadPage("devAvery");
-    // });
-
-    // $("#devKirk").on("click", function() {
-    //     loadPage("devKirk");
-    // });
 
     loadRegionsIntoList();
     loadApiKeys();
