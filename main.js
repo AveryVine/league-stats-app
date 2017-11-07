@@ -61,6 +61,11 @@ ipc.on('developer', function(event, developer) {
   })
 })
 
+ipc.on('summonerSearch', function(event, summonerName, accountId) {
+  console.log("Loading summoner page: " + summonerName)
+  console.log("Feature coming soon")
+})
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

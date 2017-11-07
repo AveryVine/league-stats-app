@@ -39,7 +39,7 @@ $(document).ready(function() {
         var summonerName = $("#summonerName").val();
         if (summonerName == null || summonerName == "") {
             console.log("Validation failed for summoner name: " + summonerName);
-            $("#summonerName").addClass("is-invalid");
+            // $("#summonerName").addClass("is-invalid");
             alert("Please enter a valid summoner name");
         }
         else {
@@ -50,10 +50,11 @@ $(document).ready(function() {
             $.get(url, function(data) {
                 console.log("Retrieved summoner: " + data.name + " (account id " + data.accountId + ")");
                 loadPage("summonerSearch", data.name, data.accountId);
+                alert("Sorry, " + data.name + "! This feature is coming soon!");
             }).fail(function(error) {
                 if (error.responseJSON.status.status_code == "404") {
                     console.log("Validation failed for summoner name: " + summonerName);
-                    $("#summonerName").addClass("is-invalid");
+                    // $("#summonerName").addClass("is-invalid");
                     alert("Please enter a valid summoner name");
                 }
                 else {
