@@ -10,7 +10,7 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 1200, height: 750, minWidth: 768, minHeight: 400})
+  win = new BrowserWindow({width: 1200, height: 750, minWidth: 778, minHeight: 400, backgroundColor: "#D4E1E7"})
 
   // and load the index.html of the app.
   win.loadURL(url.format({
@@ -43,10 +43,16 @@ ipc.on('newChampionDetailWindow', function(event, championId, championName) {
   })
 })
 
-ipc.on('Avery Vine', function() {
-  console.log("Developer received: Avery Vine")
+ipc.on('developer', function(event, developer) {
+  console.log("Developer received: " + developer)
   let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
-  let childUrl = "http://www.averyvine.com"
+  var childUrl = "";
+  if (developer == "Avery Vine") {
+    childUrl = "http://www.averyvine.com"
+  }
+  else if (developer == "Kirk Yuan") {
+    childUrl = "http://www.kirkyuan.com"
+  }
   console.log("Loading URL: " + childUrl)
   child.loadURL(childUrl)
   child.once('ready-to-show', () => {
@@ -55,16 +61,13 @@ ipc.on('Avery Vine', function() {
   })
 })
 
-ipc.on('Kirk Yuan', function() {
-  console.log("Developer received: Kirk Yuan")
-  let child = new BrowserWindow({parent: win, modal: false, show: false, width: win.getSize()[0] * 0.95, height: win.getSize()[1] * 0.95})
-  let childUrl = "http://www.kirkyuan.com"
-  console.log("Loading URL: " + childUrl)
-  child.loadURL(childUrl)
-  child.once('ready-to-show', () => {
-    child.show()
-    win.blur()
-  })
+ipc.on('summonerSearch', function(event, summonerName, accountId) {
+  console.log("Loading summoner page: " + summonerName)
+   win.webContents.loadURL(url.format({
+    pathname: path.join(__dirname, 'summoner.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
 })
 
 // This method will be called when Electron has finished

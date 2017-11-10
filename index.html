@@ -1,89 +1,65 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>League of Stats</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        <script>
+            if (typeof module === 'object') {
+                window.module = module;
+                module = undefined;
+            }
+        </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
         <script type="text/javascript" src="DataTables/datatables.min.js"></script>
-        <script type="text/javascript" src="scripts/scripts.js"></script>
+        <script type="text/javascript" src="scripts/indexScripts.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-        <script>if (window.module) module = window.module;</script>
+        <script>
+            if (window.module) module = window.module;
+        </script>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
         <link rel="stylesheet" type="text/css" href="FontAwesome/css/font-awesome.min.css">
     </head>
+
     <body>
         <nav id="navbar" class="navbar navbar-dark bg-dark fixed-top">
-            <div id="brand" class="navbar-header">
-                <a class="navbar-brand" data-toggle="collapse" href="#aboutSection">League Stats</a>
-            </div>
-            <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="#">Bans</a>
-                <!-- <a class="nav-item nav-link" href="#">Page 1</a>
-                <a class="nav-item nav-link" href="#">Page 2</a> -->
-            </div>
-            <span class="navbar-text" id="patch-info">
-                Patch: <span id="patchData">N/A</span>&nbsp&nbsp
-            </span>
-            <form class="form-inline">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                            <span id="selectedRegion">...</span>
-                            <span class="caret"></span>
-                        </button>
-                        <div id="nonSelectedRegions" class="dropdown-menu"></div>
-                    </span>
-                    <input id="summonerSearch" type="text" placeholder="Summoner Name">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                    </span>
+            <div class="container-fluid">
+                <div class="navbar-nav">
+                    <a id="backButton" class="nav-item nav-link" href="index.html"><i class="fa fa-chevron-left"></i></a>
                 </div>
-            </form>
+                <div id="brand" class="navbar-header">
+                    <span class="navbar-brand">League Stats</span>
+                </div>
+                <div class="navbar-nav mr-auto">
+                    <!-- Note: this is for placement and alignment purposes only -->
+                </div>
+                <span class="navbar-text" id="patch-info">
+                    Patch Data: <span id="patchData">N/A</span> - Riot Patch: <span id="riotPatch">N/A</span>
+                </span>
+                <form id="summonerSearch" class="form-inline">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span id="selectedRegion">...</span>
+                                <span class="caret"></span>
+                            </button>
+                            <div id="nonSelectedRegions" class="dropdown-menu"></div>
+                        </span>
+                        <input id="summonerName" class="form-control" type="text" placeholder="Summoner Name">
+                        <span class="input-group-btn">
+                            <button id="summonerSubmit" class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
         </nav>
-        <div class="collapse" id="aboutSection">
-            <div id="aboutCard" class="card text-black bg-light">
-                <div class="card-header">About</div>
-                <div class="card-body">
-                    <p>This app was inspired by Callan Jessiman, who graciously created the original application that calculated ban advantage for your elo.</p>
-                    <label class="card-link">Developers: </label>
-                    <a href="#" class="card-link developer" id="devAvery">Avery Vine</a>
-                    <a href="#" class="card-link developer" id="devKirk">Kirk Yuan</a>
-                </div>
-            </div>
-        </div>
-        <div id="headerStuffContainer" class="container">
-            <h1>Champions</h1>
-            <label>
-                Elo Selection:
-                <select onchange="updateElo(this.value.toUpperCase())">
-                    <option>Bronze</option>
-                    <option>Silver</option>
-                    <option>Gold</option>
-                    <option selected>Platinum</option>
-                    <option>Platinum+</option>
-                </select>
-            </label>
-        </div>
-        <div id="championTableContainer" class="container">
-            <table id="championTable" class="row-border display hover">
-                <thead class="header">
-                    <tr>
-                        <th>Champion</th>
-                        <th>Win Rate</th>
-                        <th>Play Rate</th>
-                        <th>Ban Rate</th>
-                        <th>Ban Advantage</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-            </table>
-        </div>
+        <iframe id="contentView" name="targetframe" allowTransparency="true" scrolling="yes" frameborder="0" width=window.innerWidth, height=window.innerHeight></iframe>
+
     </body>
+
 </html>

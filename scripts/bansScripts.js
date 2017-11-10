@@ -1,6 +1,3 @@
-require('jquery');
-const ipc = require('electron').ipcRenderer;
-
 const bypassStaticData = false;
 const bypassChampionGGData = false;
 var elo = "PLATINUM";
@@ -10,30 +7,27 @@ var riotApiKey = null;
 var championGGApiKey = null;
 var staticData = {};
 var championGGData = {};
+var browseHistory = [];
 
 $(document).ready(function() {
+    browseHistory = localStorage.getItem("history");
+    var historyPage = browseHistory[browseHistory.length - 1];
+    console.log("Loaded page: " + historyPage);
     $("#championTable").DataTable({
         "columns": [
             null,
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]},
-            {"orderSequence": ["desc", "asc"]}
-        ], "select": true
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] },
+            { "orderSequence": ["desc", "asc"] }
+        ],
+        "select": true
     });
 
     $("#championTable tbody").on("click", "tr", function() {
         championClicked(this);
     });
 
-    $(".developer").each(function() {
-        $(this).on("click", function() {
-            console.log("Clicked: " + $(this).text());
-            loadPage($(this).text());
-        });
-    });
-
-    loadRegionsIntoList();
     loadApiKeys();
 });
 
@@ -41,6 +35,7 @@ function loadApiKeys() {
     console.log("Retrieving api keys...");
     $.getJSON("apiKeys.json", function(json) {
         console.log("Retrieved api keys");
+        $("#summonerSubmit", window.parent.document).attr("disabled", false);
         riotApiKey = json["riot"];
         championGGApiKey = json["championGG"];
         getStaticData();
@@ -50,6 +45,7 @@ function loadApiKeys() {
 function updateChampionTable() {
     var table = $("#championTable").DataTable();
     table.clear();
+    $("#loadingText").hide();
     for (champion in championGGData) {
         console.log("Adding champion: " + champion);
         var championData = getDataForChampion(champion);
@@ -57,8 +53,12 @@ function updateChampionTable() {
     }
 }
 
-function updatePatch(patch) {
-    $("#patchData").text(patch);
+function updatePatch(patchData, riotPatch) {
+    $("#patchData", window.parent.document).text(patchData);
+    if (riotPatch != undefined) {
+        riotPatch = riotPatch.substring(0, riotPatch.lastIndexOf("."));
+    }
+    $("#riotPatch", window.parent.document).text(riotPatch);
 }
 
 function getStaticData() {
@@ -69,7 +69,8 @@ function getStaticData() {
         staticData = data;
         getChampionGGData();
     }).fail(function(error) {
-        alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         if (bypassStaticData) {
             getChampionGGData();
         }
@@ -84,11 +85,12 @@ function getChampionGGData() {
     }
     $.get(url, function(data) {
         console.log("Retrieved data from ChampionGG");
-        updatePatch(data[0].patch);
+        updatePatch(data[0].patch, staticData.version);
         prepareChampionGGData(data);
         updateChampionTable();
     }).fail(function(error) {
-        alert("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+        console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         if (bypassChampionGGData) {
             updateChampionTable();
         }
@@ -143,7 +145,7 @@ function championClicked(data) {
     }
     console.log("Champion clicked: " + championNameFormatted + " (" + championId + ")");
 
-    loadPage('newChampionDetailWindow', championId, championName);
+    loadExternalPage('newChampionDetailWindow', championId, championName);
 }
 
 function loadRegionsIntoList() {
@@ -157,14 +159,26 @@ function loadRegionsIntoList() {
                 loadRegionsIntoList();
             });
             dropdownList.append(newRegion);
-        }
-        else {
+        } else {
             $("#selectedRegion").text(regions[i]);
         }
     }
 }
 
-function loadPage(page, param1, param2) {
-    console.log("Sending load page event: " + page);
-    ipc.send(page, param1, param2);
+function loadPage(page, param1, param2, history) {
+    console.log("Storing params");
+    localStorage.setItem("param1", param1);
+    localStorage.setItem("param2", param2);
+    localStorage.setItem("history", history);
+    console.log("Loading page: " + page);
+    $("#contentView").attr("src", page);
+    browseHistory.push(page);
+    if (browseHistory.length > 1) {
+        $("#backButton", window.parent.document).show("slow", function() {});
+    }
+}
+
+function loadExternalPage(page, param1, param2) {
+    console.log("Sending load external page event: " + page);
+    remote.ipcRenderer.send(page, param1, param2);
 }

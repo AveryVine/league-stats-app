@@ -2,8 +2,25 @@
     border-radius: 0;
 }
 
-body {
+html {
+    background-color: #D4E1E7;
+}
+
+#summonerBody {
+    background-color: #D4E1E7;
+}
+
+#content {
     padding-top: 70px;
+    background-color: #D4E1E7;
+}
+
+#contentView {
+    background-color: #D4E1E7;
+}
+
+#loadingText {
+    text-align: center;
 }
 
 @media (max-width: 300px) {
@@ -39,6 +56,21 @@ body {
     margin-bottom: 10px;
 }
 
-#summonerSearch {
+#summonerName {
     padding-left: 10px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+#summonerSubmit {
+    margin-top: -1px;
+}
+
+#riotPatch {
+    margin-right: 10px;
+}
+
+#backButton {
+    margin-right: 10px;
+    display: none;
 }
