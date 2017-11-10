@@ -28,6 +28,9 @@
     <body>
         <nav id="navbar" class="navbar navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
+                <div class="navbar-nav">
+                    <a id="backButton" class="nav-item nav-link" href="index.html"><i class="fa fa-chevron-left"></i></a>
+                </div>
                 <div id="brand" class="navbar-header">
                     <a class="navbar-brand" data-toggle="collapse" href="#aboutSection">League Stats</a>
                 </div>
@@ -35,7 +38,7 @@
                     <!-- Note: this is for placement and alignment purposes only -->
                 </div>
                 <span class="navbar-text" id="patch-info">
-                    Patch: <span id="patchData">N/A</span>&nbsp&nbsp
+                    Patch Data: <span id="patchData">N/A</span> - Riot Patch: <span id="riotPatch">N/A</span>
                 </span>
                 <form id="summonerSearch" class="form-inline">
                     <div class="input-group">
@@ -55,46 +58,8 @@
             </div>
         </nav>
 
-        <div class="collapse" id="aboutSection">
-            <div id="aboutCard" class="card text-black bg-light">
-                <div class="card-header">About</div>
-                <div class="card-body">
-                    <p>This app was inspired by Callan Jessiman, who graciously created the original application that calculated ban advantage for your elo.</p>
-                    <label class="card-link">Developers: </label>
-                    <a href="#" class="card-link developer" id="devAvery">Avery Vine</a>
-                    <a href="#" class="card-link developer" id="devKirk">Kirk Yuan</a>
-                </div>
-            </div>
-        </div>
+        <iframe id="contentView" name="targetframe" allowTransparency="true" scrolling="yes" frameborder="0" width=window.innerWidth, height=window.innerHeight></iframe>
 
-        <div id="headerStuffContainer" class="container">
-            <h1>Champions</h1>
-            <label>
-                Elo Selection:
-                <select onchange="updateElo(this.value.toUpperCase())">
-                    <option>Bronze</option>
-                    <option>Silver</option>
-                    <option>Gold</option>
-                    <option selected>Platinum</option>
-                    <option>Platinum+</option>
-                </select>
-            </label>
-        </div>
-
-        <div id="championTableContainer" class="container">
-            <table id="championTable" class="row-border display hover">
-                <thead class="header">
-                    <tr>
-                        <th>Champion</th>
-                        <th>Win Rate</th>
-                        <th>Play Rate</th>
-                        <th>Ban Rate</th>
-                        <th>Ban Advantage</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
     </body>
 
 </html>

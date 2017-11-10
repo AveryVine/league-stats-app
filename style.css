@@ -2,7 +2,7 @@
     border-radius: 0;
 }
 
-body {
+#content {
     padding-top: 70px;
 }
 
@@ -47,4 +47,13 @@ body {
 
 #summonerSubmit {
     margin-top: -1px;
+}
+
+#riotPatch {
+    margin-right: 10px;
+}
+
+#backButton {
+    margin-right: 10px;
+    display: none;
 }

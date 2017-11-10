@@ -25,7 +25,7 @@
     </head>
 
     <body>
-        <div id="content" class="container">
+        <div id="content">
             <div class="collapse" id="aboutSection">
                 <div id="aboutCard" class="card text-black bg-light">
                     <div class="card-header">About</div>
@@ -37,7 +37,35 @@
                     </div>
                 </div>
             </div>
-            <h1 id="summonerNameTitle">Summoner Name</h1>
+    
+            <div id="headerStuffContainer" class="container">
+                <h1>Champions</h1>
+                <label>
+                    Elo Selection:
+                    <select onchange="updateElo(this.value.toUpperCase())">
+                        <option>Bronze</option>
+                        <option>Silver</option>
+                        <option>Gold</option>
+                        <option selected>Platinum</option>
+                        <option>Platinum+</option>
+                    </select>
+                </label>
+            </div>
+    
+            <div id="championTableContainer" class="container">
+                <table id="championTable" class="row-border display hover">
+                    <thead class="header">
+                        <tr>
+                            <th>Champion</th>
+                            <th>Win Rate</th>
+                            <th>Play Rate</th>
+                            <th>Ban Rate</th>
+                            <th>Ban Advantage</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </body>
 

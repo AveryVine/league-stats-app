@@ -63,7 +63,11 @@ ipc.on('developer', function(event, developer) {
 
 ipc.on('summonerSearch', function(event, summonerName, accountId) {
   console.log("Loading summoner page: " + summonerName)
-  console.log("Feature coming soon")
+   win.webContents.loadURL(url.format({
+    pathname: path.join(__dirname, 'summoner.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
 })
 
 // This method will be called when Electron has finished
