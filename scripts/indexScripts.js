@@ -54,7 +54,7 @@ $(document).ready(function() {
                     alert("Please enter a valid summoner name");
                 }
                 else {
-                    alert("Could not query for summoner data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+                    console.error("Could not query for summoner data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
                 }
             });
         }

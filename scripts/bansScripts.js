@@ -68,7 +68,7 @@ function getStaticData() {
         staticData = data;
         getChampionGGData();
     }).fail(function(error) {
-        alert("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
         if (bypassStaticData) {
             getChampionGGData();
         }
@@ -87,7 +87,7 @@ function getChampionGGData() {
         prepareChampionGGData(data);
         updateChampionTable();
     }).fail(function(error) {
-        alert("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+        console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
         if (bypassChampionGGData) {
             updateChampionTable();
         }
