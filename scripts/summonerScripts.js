@@ -17,6 +17,7 @@ $(document).ready(function() {
     summonerName = localStorage.getItem("param1");
     console.log("Summoner: " + summonerName);
     $("#summonerNameTitle").text(summonerName);
+    alert("Sorry, " + summonerName + "! This feature isn't ready yet! Press the Back (<) arrow in the top left to go back.");
 });
 
 function loadPage(page, param1, param2, history) {

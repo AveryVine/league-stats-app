@@ -15,8 +15,12 @@ html {
     background-color: #D4E1E7;
 }
 
-#contentView{
+#contentView {
     background-color: #D4E1E7;
+}
+
+#loadingText {
+    text-align: center;
 }
 
 @media (max-width: 300px) {

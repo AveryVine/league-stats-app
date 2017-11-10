@@ -45,6 +45,7 @@ function loadApiKeys() {
 function updateChampionTable() {
     var table = $("#championTable").DataTable();
     table.clear();
+    $("#loadingText").hide();
     for (champion in championGGData) {
         console.log("Adding champion: " + champion);
         var championData = getDataForChampion(champion);
@@ -69,6 +70,7 @@ function getStaticData() {
         getChampionGGData();
     }).fail(function(error) {
         console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         if (bypassStaticData) {
             getChampionGGData();
         }
@@ -88,6 +90,7 @@ function getChampionGGData() {
         updateChampionTable();
     }).fail(function(error) {
         console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         if (bypassChampionGGData) {
             updateChampionTable();
         }
