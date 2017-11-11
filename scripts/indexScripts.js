@@ -1,8 +1,6 @@
 require('jquery');
 const remote = require('electron');
 
-const bypassStaticData = false;
-const bypassChampionGGData = false;
 var elo = "PLATINUM";
 var region = "NA";
 var regions = ["NA", "EUNE", "EUW", "KR"];
@@ -22,7 +20,7 @@ $(document).ready(function() {
 
     $("#backButton").click(function() {
         browseHistory.pop();
-        historyPage = browseHistory[browseHistory.length - 1];
+        var historyPage = browseHistory.slice(-1)[0];
         console.log("Loading page: " + historyPage);
         if (historyPage == "bans.html" && browseHistory.length == 1) {
             $("#backButton").hide("slow", function() {});
@@ -46,7 +44,7 @@ $(document).ready(function() {
             var url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + formattedSummonerName + "?api_key=" + riotApiKey;
             $.get(url, function(data) {
                 console.log("Retrieved summoner: " + data.name + " (account id " + data.accountId + ")");
-                loadPage("summoner.html", data.name, data.accountId);
+                loadPage("summoner.html", data.name, data.accountId, staticData);
             }).fail(function(error) {
                 if (error.responseJSON.status.status_code == "404") {
                     console.log("Validation failed for summoner name: " + summonerName);
@@ -108,10 +106,11 @@ function loadRegionsIntoList() {
     }
 }
 
-function loadPage(page, param1, param2) {
+function loadPage(page, param1, param2, param3) {
     console.log("Storing params");
     localStorage.setItem("param1", param1);
     localStorage.setItem("param2", param2);
+    localStorage.setItem("param3", param3);
     localStorage.setItem("history", browseHistory);
     console.log("Loading page: " + page);
     $("#contentView").attr("src", page);
@@ -121,7 +120,7 @@ function loadPage(page, param1, param2) {
     }
 }
 
-function loadExternalPage(page, param1, param2) {
+function loadExternalPage(page, param1, param2, param3) {
     console.log("Sending load external page event: " + page);
-    remote.ipcRenderer.send(page, param1, param2);
+    remote.ipcRenderer.send(page, param1, param2, param3);
 }

@@ -11,7 +11,7 @@ var browseHistory = [];
 
 $(document).ready(function() {
     browseHistory = localStorage.getItem("history");
-    var historyPage = browseHistory[browseHistory.length - 1];
+    var historyPage = browseHistory.slice(-1)[0];
     console.log("Loaded page: " + historyPage);
     $("#championTable").DataTable({
         "columns": [
@@ -35,7 +35,6 @@ function loadApiKeys() {
     console.log("Retrieving api keys...");
     $.getJSON("apiKeys.json", function(json) {
         console.log("Retrieved api keys");
-        $("#summonerSubmit", window.parent.document).attr("disabled", false);
         riotApiKey = json["riot"];
         championGGApiKey = json["championGG"];
         getStaticData();
@@ -62,39 +61,46 @@ function updatePatch(patchData, riotPatch) {
 }
 
 function getStaticData() {
-    console.log("Retrieving static data...");
-    var url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=info&dataById=false&api_key=" + riotApiKey;
-    $.get(url, function(data, status) {
-        console.log("Retrieved static data");
-        staticData = data;
+    if (bypassStaticData) {
         getChampionGGData();
-    }).fail(function(error) {
-        console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
-        if (bypassStaticData) {
+    }
+    else {
+        console.log("Retrieving static data...");
+        var url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=info&dataById=false&api_key=" + riotApiKey;
+        $.get(url, function(data, status) {
+            console.log("Retrieved static data");
+            staticData = data;
+            parent.staticData = staticData;
+            console.log(parent.staticData.data);
             getChampionGGData();
-        }
-    });
+        }).fail(function(error) {
+            console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+            $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+        });
+    }
 }
 
 function getChampionGGData() {
-    console.log("Retrieving data from ChampionGG...");
-    var url = "http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=" + championGGApiKey;
-    if (elo == "PLATINUM+") {
-        url.replace("elo=PLATINUM+&", "");
-    }
-    $.get(url, function(data) {
-        console.log("Retrieved data from ChampionGG");
-        updatePatch(data[0].patch, staticData.version);
-        prepareChampionGGData(data);
+    if (bypassChampionGGData) {
         updateChampionTable();
-    }).fail(function(error) {
-        console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
-        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
-        if (bypassChampionGGData) {
-            updateChampionTable();
+    }
+    else {
+        console.log("Retrieving data from ChampionGG...");
+        var url = "http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=" + championGGApiKey;
+        if (elo == "PLATINUM+") {
+            url.replace("elo=PLATINUM+&", "");
         }
-    });
+        $.get(url, function(data) {
+            console.log("Retrieved data from ChampionGG");
+            updatePatch(data[0].patch, staticData.version);
+            prepareChampionGGData(data);
+            updateChampionTable();
+        }).fail(function(error) {
+            console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
+            $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+        });
+    }
+    
 }
 
 function prepareChampionGGData(data) {
@@ -165,20 +171,21 @@ function loadRegionsIntoList() {
     }
 }
 
-function loadPage(page, param1, param2, history) {
+function loadPage(page, param1, param2, param3) {
     console.log("Storing params");
     localStorage.setItem("param1", param1);
     localStorage.setItem("param2", param2);
-    localStorage.setItem("history", history);
+    localStorage.setItem("param3", param3);
+    localStorage.setItem("history", browseHistory);
     console.log("Loading page: " + page);
     $("#contentView").attr("src", page);
     browseHistory.push(page);
     if (browseHistory.length > 1) {
-        $("#backButton", window.parent.document).show("slow", function() {});
+        $("#backButton").show("slow", function() {});
     }
 }
 
-function loadExternalPage(page, param1, param2) {
+function loadExternalPage(page, param1, param2, param3) {
     console.log("Sending load external page event: " + page);
-    remote.ipcRenderer.send(page, param1, param2);
+    remote.ipcRenderer.send(page, param1, param2, param3);
 }
