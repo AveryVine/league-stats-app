@@ -141,7 +141,9 @@ function loadPage(page, param1, param2, param3) {
     localStorage.setItem("history", browseHistory);
     console.log("Loading page: " + page);
     $("#contentView").attr("src", page);
-    browseHistory.push(page);
+    if (browseHistory[browseHistory.length - 1] != page) {
+        browseHistory.push(page);
+    }
     if (browseHistory.length > 1) {
         $("#backButton").show("slow", function() {});
     }
