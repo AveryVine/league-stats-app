@@ -33,11 +33,14 @@ $(document).ready(function() {
 
 function loadApiKeys() {
     console.log("Retrieving api keys...");
-    $.getJSON("apiKeys.json", function(json) {
+    var url = "http://www.averyvine.com/discordBot/keys";
+    $.get(url, function(data, status) {
         console.log("Retrieved api keys");
-        riotApiKey = json["riot"];
-        championGGApiKey = json["championGG"];
+        riotApiKey = data["riot"];
+        championGGApiKey = data["championGG"];
         getStaticData();
+    }).fail(function(error) {
+        console.error("Could not get api keys.");
     });
 }
 

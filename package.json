@@ -6,13 +6,14 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/electron.icns --prune=true --out=release-builds",
-    "package-windows": "electron-packager . league-stats --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName='League Stats'"
+    "build": "electron ./node_modules/electron-toolkit"
   },
   "author": "Avery Vine",
   "devDependencies": {
-    "electron": "^1.7.9",
-    "electron-packager": "^10.1.0"
+    "electron": "^2.0.0",
+    "electron-builder": "^20.27.1",
+    "electron-toolkit": "^1.0.24",
+    "jshint": "^2.9.6"
   },
   "dependencies": {
     "jquery": "^3.2.1"

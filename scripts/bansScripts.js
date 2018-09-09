@@ -6,6 +6,7 @@ var regions = ["NA", "EUNE", "EUW", "KR"];
 var riotApiKey = null;
 var championGGApiKey = null;
 var staticData = {};
+var version = null;
 var championGGData = {};
 var browseHistory = [];
 
@@ -33,11 +34,14 @@ $(document).ready(function() {
 
 function loadApiKeys() {
     console.log("Retrieving api keys...");
-    $.getJSON("apiKeys.json", function(json) {
+    var url = "https://avery-vine-server.herokuapp.com/apikeys";
+    $.get(url, function(data, status) {
         console.log("Retrieved api keys");
-        riotApiKey = json["riot"];
-        championGGApiKey = json["championGG"];
-        getStaticData();
+        riotApiKey = data["riot"];
+        championGGApiKey = data["championGG"];
+        getVersion();
+    }).fail(function(error) {
+        console.error("Could not get api keys.");
     });
 }
 
@@ -60,21 +64,36 @@ function updatePatch(patchData, riotPatch) {
     $("#riotPatch", window.parent.document).text(riotPatch);
 }
 
-function getStaticData() {
+function getVersion() {
+    console.log("Getting LoL version...");
+    var url = "https://ddragon.leagueoflegends.com/api/versions.json";
+    $.get(url, function(data) {
+        console.log("Retrieved version data");
+        version = data[0];
+        parent.version = version;
+        console.log(version);
+        getChampions();
+    }).fail(function(error) {
+        console.error("Could not query for LoL version:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+    });
+}
+
+function getChampions() {
     if (bypassStaticData) {
         getChampionGGData();
     }
     else {
-        console.log("Retrieving static data...");
-        var url = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&tags=info&dataById=false&api_key=" + riotApiKey;
+        console.log("Retrieving champion data...");
+        var url = "https://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion.json";
         $.get(url, function(data, status) {
-            console.log("Retrieved static data");
-            staticData = data;
-            parent.staticData = staticData;
-            console.log(parent.staticData.data);
+            console.log("Retrieved champion data");
+            champions = data.data;
+            parent.champions = champions;
+            console.log(champions);
             getChampionGGData();
         }).fail(function(error) {
-            console.error("Could not query for static data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
+            console.error("Could not query for champion data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
             $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         });
     }
@@ -88,11 +107,11 @@ function getChampionGGData() {
         console.log("Retrieving data from ChampionGG...");
         var url = "http://api.champion.gg/v2/champions?elo=" + elo + "&limit=200&api_key=" + championGGApiKey;
         if (elo == "PLATINUM+") {
-            url.replace("elo=PLATINUM+&", "");
+            url = url.replace("elo=PLATINUM+&", "");
         }
         $.get(url, function(data) {
             console.log("Retrieved data from ChampionGG");
-            updatePatch(data[0].patch, staticData.version);
+            updatePatch(data[0].patch, version);
             prepareChampionGGData(data);
             updateChampionTable();
         }).fail(function(error) {
@@ -100,14 +119,14 @@ function getChampionGGData() {
             $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
         });
     }
-    
+
 }
 
 function prepareChampionGGData(data) {
-    for (champion in staticData.data) {
-        console.log("Retrieving stats for " + champion + " (id " + staticData.data[champion].id + ")");
+    for (champion in champions) {
+        console.log("Retrieving stats for " + champion + " (key " + champions[champion].key + ")");
         for (i in data) {
-            if (staticData.data[champion].id == data[i].championId) {
+            if (champions[champion].key == data[i].championId) {
                 championGGData[champion] = data[i];
                 break;
             }
@@ -120,7 +139,7 @@ function getDataForChampion(champion) {
     var playRate = championGGData[champion].playRate;
     var banRate = championGGData[champion].banRate;
     var banAdvantage = ((winRate - 0.5) * playRate / (1 - banRate));
-    return [staticData.data[champion].name,
+    return [champions[champion].name,
         formatPercentage(winRate, 2),
         formatPercentage(playRate, 2),
         formatPercentage(banRate, 3),

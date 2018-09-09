@@ -7,6 +7,7 @@ var regions = ["NA", "EUNE", "EUW", "KR"];
 var riotApiKey = null;
 var championGGApiKey = null;
 var staticData = {};
+var version = null;
 var championGGData = {};
 var browseHistory = [];
 
@@ -72,7 +73,7 @@ function updateContentViewDimensions() {
 
 function loadApiKeys() {
     console.log("Retrieving api keys...");
-    var url = "http://www.averyvine.com/discordBot/keys";
+    var url = "https://avery-vine-server.herokuapp.com/apikeys";
     $.get(url, function(data, status) {
         console.log("Retrieved api keys");
         riotApiKey = data["riot"];
@@ -81,13 +82,6 @@ function loadApiKeys() {
     }).fail(function(error) {
         console.error("Could not get api keys.");
     });
-
-    // console.log("Retrieving api keys...");
-    // $.getJSON("apiKeys.json", function(json) {
-    //     console.log("Retrieved api keys");
-    //     riotApiKey = json["riot"];
-    //     championGGApiKey = json["championGG"];
-    // });
 }
 
 function updatePatch(patchData, riotPatch) {
