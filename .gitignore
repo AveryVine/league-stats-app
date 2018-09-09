@@ -62,3 +62,6 @@ apiKeys.json
 
 # Mac Stuff
 .DS_Store
+
+# Other
+dist
