@@ -1,21 +1,43 @@
 {
-  "name": "league-stats",
-  "productName": "League Stats",
-  "version": "1.0.0",
-  "description": "An app that calculates stats about the best bans in League of Legends",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron ./node_modules/electron-toolkit"
-  },
-  "author": "Avery Vine",
-  "devDependencies": {
-    "electron": "^2.0.0",
-    "electron-builder": "^20.27.1",
-    "electron-toolkit": "^1.0.24",
-    "jshint": "^2.9.6"
-  },
-  "dependencies": {
-    "jquery": "^3.2.1"
-  }
+    "name": "league-stats",
+    "productName": "League Stats",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron ./node_modules/electron-toolkit"
+    },
+    "author": "Avery Vine",
+    "devDependencies": {
+        "electron": "^2.0.0",
+        "electron-builder": "^20.27.1",
+        "electron-toolkit": "^1.0.24",
+        "jshint": "^2.9.6"
+    },
+    "dependencies": {
+        "jquery": "^3.2.1"
+    },
+    "build": {
+        "appId": "com.electron.league-stats",
+        "copyright": "Copyright © 2018 Avery Vine",
+        "productName": "League Stats",
+        "electronVersion": "2.0.8",
+        "asar": true,
+        "directories": {
+            "app": "/Users/averyvine/Documents/Code/Electron/League Stats",
+            "output": "dist"
+        },
+        "mac": {
+            "category": "public.app-category.games",
+            "target": [
+                {
+                    "target": "dmg",
+                    "arch": [
+                        "x64"
+                    ]
+                }
+            ]
+        }
+    }
 }
