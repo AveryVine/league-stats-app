@@ -1,27 +1,27 @@
 const bypassMatchList = false;
 const bypassMatchData = false;
-var elo = "PLATINUM";
-var region = "NA";
-var regions = ["NA", "EUNE", "EUW", "KR"];
-var riotApiKey = null;
-var championGGApiKey = null;
-var staticData = {};
-var matchList = [];
-var championInfo = {};
-var browseHistory = [];
-var summonerName = "";
-var accountId = "";
-var queue = 420;
-var matchCountLimit = 5;
+let elo = "PLATINUM";
+let region = "NA";
+let regions = ["NA", "EUNE", "EUW", "KR"];
+let riotApiKey = null;
+let championGGApiKey = null;
+let champions = {};
+let matchList = [];
+let championInfo = {};
+let browseHistory = [];
+let summonerName = "";
+let accountId = "";
+let queue = 420;
+let matchCountLimit = 5;
 
-$(document).ready(function() {
+$(document).ready(function () {
     browseHistory = localStorage.getItem("history");
-    var historyPage = browseHistory.slice(-1)[0];
+    let historyPage = browseHistory.slice(-1)[0];
     console.log("Loaded page: " + historyPage);
     summonerName = localStorage.getItem("param1");
     accountId = localStorage.getItem("param2");
-    staticData = parent.staticData;
-    console.log(staticData);
+    champions = parent.champions;
+    console.log(champions);
     console.log("Summoner: " + summonerName);
     $("#summonerNameTitle").text(summonerName);
     // alert("Sorry, " + summonerName + "! This feature isn't ready yet! Press the Back (<) arrow in the top left to go back.");
@@ -30,28 +30,28 @@ $(document).ready(function() {
 
 function loadApiKeys() {
     console.log("Retrieving api keys...");
-    $.getJSON("apiKeys.json", function(json) {
+    let url = "https://avery-vine-server.herokuapp.com/apikeys";
+    $.get(url, function (data, status) {
         console.log("Retrieved api keys");
         $("#summonerSubmit", window.parent.document).attr("disabled", false);
-        riotApiKey = json["riot"];
-        championGGApiKey = json["championGG"];
+        riotApiKey = data.riot;
+        championGGApiKey = data.championGG;
         getMatchList();
     });
 }
 
 function getMatchList() {
     if (bypassMatchList) {
-        
-    }
-    else {
+
+    } else {
         console.log("Retrieving match list...");
-        var url = "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/" + accountId + "?queue=" + queue + "&endIndex=" + matchCountLimit + "&api_key=" + riotApiKey;
-        $.get(url, function(data, status) {
+        let url = "https://na1.api.riotgames.com/lol/match/v3/matchlists/by-account/" + accountId + "?queue=" + queue + "&endIndex=" + matchCountLimit + "&api_key=" + riotApiKey;
+        $.get(url, function (data, status) {
             console.log("Retrieved match list");
-            for (match in data.matches) {
+            for (let match in data.matches) {
                 getMatchData(data.matches[match].gameId, match);
             }
-        }).fail(function(error) {
+        }).fail(function (error) {
             console.error("Could not query for match list:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
             $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong!</h2>");
         });
@@ -61,17 +61,16 @@ function getMatchList() {
 function getMatchData(gameId, matchNum) {
     if (bypassMatchData) {
 
-    }
-    else {
+    } else {
         console.log("Retrieving match data for gameId: " + gameId);
-        var url = "https://na1.api.riotgames.com/lol/match/v3/matches/" + gameId + "?api_key=" + riotApiKey;
-        $.get(url, function(data, status) {
+        let url = "https://na1.api.riotgames.com/lol/match/v3/matches/" + gameId + "?api_key=" + riotApiKey;
+        $.get(url, function (data, status) {
             console.log("Retrieved match data");
             matchList.push(data);
             if (matchNum == matchCountLimit - 1) {
                 gatherMatchStatistics();
             }
-        }).fail(function(error) {
+        }).fail(function (error) {
             console.error("Could not query for match data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
             $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong!</h2>");
         });
@@ -80,38 +79,39 @@ function getMatchData(gameId, matchNum) {
 
 function analyzeMatchData() {
     console.log("Analyzing match data...");
-    
+
 }
 
 function gatherMatchStatistics() {
     console.log("Gathering match statistics...");
-    for (i in matchList) {
-        var match = matchList[i];
-        var teamId = 100;
-        var participantId = 1;
-        var win = false;
-        for (j in match.participantIdentities) {
+    for (let i in matchList) {
+        let match = matchList[i];
+        let teamId = 100;
+        let participantId = 1;
+        let win = false;
+        for (let j in match.participantIdentities) {
             if (match.participantIdentities[j].player.summonerName == summonerName) {
                 participantId = match.participantIdentities[j].participantId;
                 teamId = match.participants[participantId - 1].teamId;
             }
         }
-        for (j in match.teams) {
-            var team = match.teams[j];
+        for (let j in match.teams) {
+            let team = match.teams[j];
             if (team.teamId == teamId && team.win != "Win") {
                 win = true;
             }
         }
         console.log("Analyzing match...");
-        for (j in match.participants) {
-            var participant = match.participants[j];
+        console.log(champions);
+        console.log(championInfo);
+        for (let j in match.participants) {
+            let participant = match.participants[j];
             if (participant.teamId != teamId) {
                 console.log("Analyzing new enemy...");
-                var championId = match.participants[j].championId;
-                var championName = staticData.name;
-                var gamesVs = 0;
-                var lossesVs = 0;
-                var championName = "";
+                let championId = match.participants[j].championId;
+                let championName = "";
+                let gamesVs = 0;
+                let lossesVs = 0;
                 if (championInfo[championId] != undefined) {
                     gamesVs = championInfo[championId].gamesVs;
                     lossesVs = championInfo[championId].lossesVs;
@@ -120,14 +120,18 @@ function gatherMatchStatistics() {
                 if (!win) {
                     lossesVs++;
                 }
-                for (champion in staticData.data) {
-                    if (staticData.data[champion].id == championId) {
+                for (let champion in champions) {
+                    if (champions[champion].key == championId) {
                         championName = champion;
                         break;
                     }
                 }
-                championInfo[championId] = {"name": champion, "gamesVs": gamesVs, "lossesVS": lossesVs};
-                console.log("Updated champion: " + champion + " (games vs: " + gamesVs + ", losses vs: " + lossesVs + ")");
+                championInfo[championId] = {
+                    "name": championName,
+                    "gamesVs": gamesVs,
+                    "lossesVs": lossesVs
+                };
+                console.log("Updated champion: " + championName + " (games vs: " + gamesVs + ", losses vs: " + lossesVs + ")");
             }
         }
     }
@@ -145,7 +149,7 @@ function loadPage(page, param1, param2, param3) {
         browseHistory.push(page);
     }
     if (browseHistory.length > 1) {
-        $("#backButton").show("slow", function() {});
+        $("#backButton").show("slow", function () {});
     }
 }
 
