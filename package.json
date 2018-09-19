@@ -29,7 +29,6 @@
             "output": "dist"
         },
         "mac": {
-            "category": "public.app-category.games",
             "target": [
                 {
                     "target": "dmg",
@@ -37,7 +36,8 @@
                         "x64"
                     ]
                 }
-            ]
+            ],
+            "category": "public.app-category.games"
         }
     }
 }
