@@ -2,21 +2,17 @@
     border-radius: 0;
 }
 
-html {
-    background-color: #D4E1E7;
+html, body {
+    background-color: #D4E1E7 !important;
 }
 
-#summonerBody {
-    background-color: #D4E1E7;
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
 }
 
 #content {
     padding-top: 70px;
-    background-color: #D4E1E7;
-}
-
-#contentView {
-    background-color: #D4E1E7;
 }
 
 #loadingText {
@@ -54,6 +50,10 @@ html {
     max-width: 30rem;
     margin-left: 10px;
     margin-bottom: 10px;
+}
+
+#summonerSearch {
+    display: none;
 }
 
 #summonerName {

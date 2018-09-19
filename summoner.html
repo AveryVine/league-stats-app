@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>League of Stats</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script>
-            if (typeof module === 'object') {
-                window.module = module;
-                module = undefined;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>League Stats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="DataTables/datatables.min.js"></script>
+    <script type="text/javascript" src="scripts/summonerScripts.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+        crossorigin="anonymous"></script>
+    <script>
+        if (window.module) module = window.module;
         </script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="DataTables/datatables.min.js"></script>
-        <script type="text/javascript" src="scripts/summonerScripts.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-        <script>
-            if (window.module) module = window.module;
-        </script>
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
-        <link rel="stylesheet" type="text/css" href="FontAwesome/css/font-awesome.min.css">
-    </head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="FontAwesome/css/font-awesome.min.css">
+</head>
 
-    <body id="summonerBody">
-        <div id="content" class="container">
-            <h1 id="summonerNameTitle">Summoner Name</h1>
-            <!-- <h2 id="analyzingText">Analyzing solo queue data...</h2> -->
-            <h2 id="analyzingText">This feature is currently under development.</h2>
-            <p id="analyzingTextSupplement">Press the back arrow in the top left to go back.</p>
-        </div>
-    </body>
+<body id="summonerBody">
+    <div id="content" class="container">
+        <h1 id="summonerNameTitle">Summoner Name</h1>
+        <!-- <h2 id="analyzingText">Analyzing solo queue data...</h2> -->
+        <h2 id="analyzingText">This feature is currently under development.</h2>
+        <p id="analyzingTextSupplement">Press the back arrow in the top left to go back.</p>
+    </div>
+</body>
 
 </html>

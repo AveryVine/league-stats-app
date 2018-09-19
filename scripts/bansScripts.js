@@ -1,14 +1,15 @@
-const bypassStaticData = false;
+const bypassRiotChampionData = false;
 const bypassChampionGGData = false;
 let elo = "PLATINUM";
 let region = "NA";
 let regions = ["NA", "EUNE", "EUW", "KR"];
 let riotApiKey = null;
 let championGGApiKey = null;
-let staticData = {};
 let version = null;
 let championGGData = {};
 let browseHistory = [];
+
+const remote = window.parent.require('electron');
 
 $(document).ready(function () {
     browseHistory = localStorage.getItem("history");
@@ -60,8 +61,9 @@ function updateChampionTable() {
     for (let champion in championGGData) {
         console.log("Adding champion: " + champion);
         let championData = getDataForChampion(champion);
-        table.row.add(championData).order([4, 'desc']).draw();
+        table.row.add(championData).order([4, 'desc']);
     }
+    table.draw();
 }
 
 function updatePatch(patchData, riotPatch) {
@@ -83,12 +85,12 @@ function getVersion() {
         getChampions();
     }).fail(function (error) {
         console.error("Could not query for LoL version:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-        $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+        $("#loadingText").html("<h2 id='loadingText'>Something went wrong! Try again later.</h2>");
     });
 }
 
 function getChampions() {
-    if (bypassStaticData) {
+    if (bypassRiotChampionData) {
         getChampionGGData();
     } else {
         console.log("Retrieving champion data...");
@@ -101,7 +103,7 @@ function getChampions() {
             getChampionGGData();
         }).fail(function (error) {
             console.error("Could not query for champion data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-            $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+            $("#loadingText").html("<h2 id='loadingText'>Something went wrong! Try again later.</h2>");
         });
     }
 }
@@ -122,7 +124,7 @@ function getChampionGGData() {
             updateChampionTable();
         }).fail(function (error) {
             console.error("Could not query for ChampionGG data:\n\nResponse: " + error.responseJSON.message + " (" + error.responseJSON.code + ")");
-            $("#loadingText").html("<h2 id='loadingText'>Something went wrong!</h2>");
+            $("#loadingText").html("<h2 id='loadingText'>Something went wrong! Try again later.</h2>");
         });
     }
 
@@ -148,8 +150,8 @@ function getDataForChampion(champion) {
     return [champions[champion].name,
         formatPercentage(winRate, 2),
         formatPercentage(playRate, 2),
-        formatPercentage(banRate, 3),
-        formatPercentage(banAdvantage, 5)
+        formatPercentage(banRate, 2),
+        formatPercentage(banAdvantage, 3)
     ];
 }
 
@@ -167,9 +169,9 @@ function championClicked(data) {
     let championNameFormatted = $("#championTable").DataTable().row(data).data()[0];
     let championId = 0;
     let championName = "";
-    for (let champion in staticData.data) {
-        if (staticData.data[champion].name == championNameFormatted) {
-            championId = staticData.data[champion].key;
+    for (let champion in champions) {
+        if (champions[champion].name == championNameFormatted) {
+            championId = champions[champion].key;
             championName = champion;
             break;
         }

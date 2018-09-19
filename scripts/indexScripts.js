@@ -1,6 +1,8 @@
 require('jquery');
 const remote = require('electron');
 
+const SHOW_SUMMONER_SEARCH = true; //change me to show the summoner search bar
+
 let elo = "PLATINUM";
 let region = "NA";
 let regions = ["NA", "EUNE", "EUW", "KR"];
@@ -12,12 +14,9 @@ let championGGData = {};
 let browseHistory = [];
 
 $(document).ready(function () {
-    $(".developer").each(function () {
-        $(this).on("click", function () {
-            console.log("Clicked: " + $(this).text());
-            loadExternalPage("developer", $(this).text());
-        });
-    });
+    if (SHOW_SUMMONER_SEARCH) {
+        $("#summonerSearch").show();
+    }
 
     $("#backButton").click(function () {
         browseHistory.pop();

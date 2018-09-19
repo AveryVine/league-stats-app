@@ -1,6 +1,7 @@
 const {
   app,
-  BrowserWindow
+  BrowserWindow,
+  Menu
 } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -15,8 +16,8 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1225,
-    height: 750,
-    minWidth: 778,
+    height: 800,
+    minWidth: 800,
     minHeight: 400,
     backgroundColor: "#D4E1E7"
   });
@@ -38,47 +39,62 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  setMainMenu();
+}
+
+function setMainMenu() {
+  const template = [
+    {
+      label: 'Filter',
+      submenu: [
+        {
+          label: 'About League Stats',
+          accelerator: 'Shift+CmdOrCtrl+A',
+          click() {
+              displayAboutWindow();
+          }
+        },
+        {
+          label: 'Quit League Stats',
+          accelerator: 'CmdOrCtrl+Q',
+          click() {
+            app.quit();
+          }
+        }
+      ]
+    }
+  ];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
+function displayAboutWindow() {
+  let child = new BrowserWindow({
+    parent: win,
+    modal: false,
+    show: true
+  });
+  child.loadURL(url.format({
+    pathname: path.join(__dirname, 'about.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
 }
 
 ipc.on('newChampionDetailWindow', function (event, championId, championName) {
-  console.log("Champion ID received: " + championId);
+  console.log("Champion received: " + championName + " (id " + championId + ")");
+  let childWidth = Math.round(win.getSize()[0] * 0.95);
+  let childHeight = Math.round(win.getSize()[1] * 0.95);
   let child = new BrowserWindow({
     parent: win,
     modal: false,
-    show: false,
-    width: win.getSize()[0] * 0.95,
-    height: win.getSize()[1] * 0.95
+    show: true,
+    width: childWidth,
+    height: childHeight
   });
-  let childUrl = "http://gameinfo.na.leagueoflegends.com/en/game-info/champions/" + championName.toLowerCase();
+  let childUrl = "https://gameinfo.na.leagueoflegends.com/en/game-info/champions/" + championName;
   console.log("Loading URL: " + childUrl);
   child.loadURL(childUrl);
-  child.once('ready-to-show', () => {
-    child.show();
-    win.blur();
-  });
-});
-
-ipc.on('developer', function (event, developer) {
-  console.log("Developer received: " + developer);
-  let child = new BrowserWindow({
-    parent: win,
-    modal: false,
-    show: false,
-    width: win.getSize()[0] * 0.95,
-    height: win.getSize()[1] * 0.95
-  });
-  var childUrl = "";
-  if (developer == "Avery Vine") {
-    childUrl = "http://www.averyvine.com";
-  } else if (developer == "Kirk Yuan") {
-    childUrl = "http://www.kirkyuan.com";
-  }
-  console.log("Loading URL: " + childUrl);
-  child.loadURL(childUrl);
-  child.once('ready-to-show', () => {
-    child.show();
-    win.blur();
-  });
 });
 
 ipc.on('summonerSearch', function (event, summonerName, accountId) {

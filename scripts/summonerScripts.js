@@ -12,7 +12,9 @@ let browseHistory = [];
 let summonerName = "";
 let accountId = "";
 let queue = 420;
-let matchCountLimit = 5;
+let matchCountLimit = 10;
+
+const remote = window.parent.require('electron');
 
 $(document).ready(function () {
     browseHistory = localStorage.getItem("history");
@@ -53,7 +55,7 @@ function getMatchList() {
             }
         }).fail(function (error) {
             console.error("Could not query for match list:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-            $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong!</h2>");
+            $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong! Try again later.</h2>");
         });
     }
 }
@@ -72,7 +74,7 @@ function getMatchData(gameId, matchNum) {
             }
         }).fail(function (error) {
             console.error("Could not query for match data:\n\nResponse: " + error.responseJSON.status.message + " (" + error.responseJSON.status.status_code + ")");
-            $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong!</h2>");
+            $("#analyzingText").html("<h2 id='analyzingText'>Something went wrong! Try again later.</h2>");
         });
     }
 }
@@ -97,7 +99,8 @@ function gatherMatchStatistics() {
         }
         for (let j in match.teams) {
             let team = match.teams[j];
-            if (team.teamId == teamId && team.win != "Win") {
+            console.log(team);
+            if (team.teamId == teamId && team.win == "Win") {
                 win = true;
             }
         }

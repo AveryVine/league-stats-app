@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>League of Stats</title>
+    <title>League Stats</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         if (typeof module === 'object') {
@@ -30,19 +30,6 @@
 
 <body>
     <div id="content">
-        <div class="collapse" id="aboutSection">
-            <div id="aboutCard" class="card text-black bg-light">
-                <div class="card-header">About</div>
-                <div class="card-body">
-                    <p>This app was inspired by Callan Jessiman, who graciously created the original application that
-                        calculated ban advantage for your elo.</p>
-                    <label class="card-link">Developers: </label>
-                    <a href="#" class="card-link developer" id="devAvery">Avery Vine</a>
-                    <a href="#" class="card-link developer" id="devKirk">Kirk Yuan</a>
-                </div>
-            </div>
-        </div>
-
         <div id="headerStuffContainer" class="container">
             <h1>Champions</h1>
             <label>
@@ -73,6 +60,16 @@
             <div id="loadingText">
                 <h2> Loading data... </h2>
             </div>
+        </div>
+
+        <div id="banStatBreakdown" class="container mt-4">
+            <h3>Stat Breakdown</h3>
+            <ul>
+                <li>Win Rate: percentage of games that a given champion wins</li>
+                <li>Play Rate: percentage of games in which a given champion is played</li>
+                <li>Ban Rate: percentage of bans that are a given champion (NOT percentage of games in which a given champion is banned)</li>
+                <li><b>BAN ADVANTAGE:</b> percentage in win rate gained by banning a given champion</li>
+            </ul>
         </div>
     </div>
 </body>
