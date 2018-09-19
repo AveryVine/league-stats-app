@@ -25,19 +25,18 @@
         "electronVersion": "2.0.8",
         "asar": true,
         "directories": {
-            "app": "/Users/averyvine/Documents/Code/Electron/League Stats",
+            "app": "C:\\Users\\Avery Vine\\Documents\\Code\\league-stats-app",
             "output": "dist"
         },
-        "mac": {
+        "win": {
             "target": [
                 {
-                    "target": "dmg",
+                    "target": "nsis",
                     "arch": [
                         "x64"
                     ]
                 }
-            ],
-            "category": "public.app-category.games"
+            ]
         }
     }
 }

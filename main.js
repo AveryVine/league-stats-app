@@ -46,7 +46,7 @@ function createWindow() {
 function setMainMenu() {
   const template = [
     {
-      label: 'Filter',
+      label: 'Actions - League Stats',
       submenu: [
         {
           label: 'About League Stats',
