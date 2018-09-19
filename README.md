@@ -29,4 +29,4 @@ Your operating system may try to protect you from an "unidentified developer" or
 - Win Rate: percentage of games that a given champion wins
 - Play Rate: percentage of games in which a given champion is played
 - Ban Rate: percentage of bans that are a given champion (NOT percentage of games in which a given champion is banned)
-- **BAN ADVANTAGE:** percentage in win rate gained by banning a given champion
+- **BAN ADVANTAGE:** percentage in win rate gained by banning a given champion (champions with higher ban advantages are better bans and increase your chance of winning by the % shown, while champions with negative ban advantages hurt your chance of winning when banned)
