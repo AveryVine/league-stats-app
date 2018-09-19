@@ -1,7 +1,7 @@
 {
     "name": "league-stats",
     "productName": "League Stats",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "This is an Electron-based application that provides players with detailed stats during the pre-game phase. These stats include pick/win/ban rates for all champions, and % advantage (winrate) gained by banning particular champions.",
     "main": "main.js",
     "scripts": {
