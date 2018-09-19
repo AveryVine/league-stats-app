@@ -2,7 +2,7 @@
     "name": "league-stats",
     "productName": "League Stats",
     "version": "1.0.1",
-    "description": "This is an Electron-based application that provides players with detailed stats during the pre-game phase. These stats include pick/win/ban rates for all champions, and % advantage (winrate) gained by banning particular champions.",
+    "description": "",
     "main": "main.js",
     "scripts": {
         "start": "electron .",
@@ -29,7 +29,6 @@
             "output": "dist"
         },
         "mac": {
-            "category": "public.app-category.games",
             "target": [
                 {
                     "target": "dmg",
@@ -37,7 +36,8 @@
                         "x64"
                     ]
                 }
-            ]
+            ],
+            "category": "public.app-category.games"
         }
     }
 }

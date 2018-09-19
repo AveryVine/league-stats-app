@@ -8,6 +8,8 @@ const url = require('url');
 const electron = require('electron');
 const ipc = electron.ipcMain;
 
+const DISPLAY_DEV_TOOLS = false; //change me to toggle dev tools
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -30,7 +32,9 @@ function createWindow() {
   }));
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  if (DISPLAY_DEV_TOOLS) {
+    win.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -79,6 +83,10 @@ function displayAboutWindow() {
     protocol: 'file:',
     slashes: true
   }));
+
+  if (DISPLAY_DEV_TOOLS) {
+    child.webContents.openDevTools();
+  }
 }
 
 ipc.on('newChampionDetailWindow', function (event, championId, championName) {
