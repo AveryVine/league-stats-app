@@ -1,7 +1,7 @@
 require('jquery');
 const remote = require('electron');
 
-const SHOW_SUMMONER_SEARCH = true; //change me to show the summoner search bar
+const SHOW_SUMMONER_SEARCH = false; //change me to show the summoner search bar
 
 let elo = "PLATINUM";
 let region = "NA";
