@@ -29,6 +29,10 @@ $(document).ready(function () {
         return false;
     });
 
+    $("#refreshButton").click(function() {
+        loadPage("bans.html");
+    });
+
     $("#summonerSearch").submit(function (e) {
         e.preventDefault();
         let summonerName = $("#summonerName").val();
