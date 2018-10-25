@@ -52,6 +52,10 @@ html, body {
     margin-bottom: 10px;
 }
 
+#refresh-data {
+    margin-right: 10px;
+}
+
 #summonerSearch {
     display: none;
 }
@@ -73,4 +77,8 @@ html, body {
 #backButton {
     margin-right: 10px;
     display: none;
+}
+
+#selectedRegion {
+    font-weight: 600;
 }
