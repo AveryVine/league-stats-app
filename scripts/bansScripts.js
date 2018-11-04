@@ -1,6 +1,7 @@
 const bypassRiotChampionData = false;
 const bypassChampionGGData = false;
 let elo = "PLATINUM";
+let roleFilter = "ALL";
 let region = "NA";
 let regions = ["NA", "EUNE", "EUW", "KR"];
 let riotApiKey = null;
@@ -8,6 +9,13 @@ let championGGApiKey = null;
 let version = null;
 let championGGData = {};
 let browseHistory = [];
+let formattedRoles = {
+    "TOP": "TOP",
+    "JUNGLE": "JUNGLE",
+    "MIDDLE": "MID",
+    "DUO_CARRY": "BOT",
+    "DUO_SUPPORT": "SUPPORT"
+};
 
 const remote = window.parent.require('electron');
 
@@ -16,24 +24,18 @@ $(document).ready(function () {
     let historyPage = browseHistory.slice(-1)[0];
     console.log("Loaded page: " + historyPage);
     $("#championTable").DataTable({
-        "columns": [
-            null,
+        "columnDefs": [
             {
-                "orderSequence": ["desc", "asc"]
+                "targets": [1],
+                "searchable": false
             },
             {
-                "orderSequence": ["desc", "asc"]
-            },
-            {
-                "orderSequence": ["desc", "asc"]
-            },
-            {
-                "orderSequence": ["desc", "asc"]
+                "targets": [5],
+                "searchable": false,
+                "visible": false
             }
-        ],
-        "select": true
+        ]
     });
-
     $("#championTable tbody").on("click", "tr", function () {
         championClicked(this);
     });
@@ -61,7 +63,9 @@ function updateChampionTable() {
     for (let champion in championGGData) {
         console.log("Adding champion: " + champion);
         let championData = getDataForChampion(champion);
-        table.row.add(championData).order([4, 'desc']);
+        if (roleFilter === "ALL" || roleFilter === championData[5]) {
+            table.row.add(championData).order([4, 'desc']);
+        }
     }
     table.draw();
 }
@@ -147,11 +151,13 @@ function getDataForChampion(champion) {
     let playRate = championGGData[champion].playRate;
     let banRate = championGGData[champion].banRate;
     let banAdvantage = ((winRate - 0.5) * playRate / (1 - banRate));
+    let role = championGGData[champion].role;
     return [champions[champion].name,
         formatPercentage(winRate, 2),
         formatPercentage(playRate, 2),
         formatPercentage(banRate, 2),
-        formatPercentage(banAdvantage, 3)
+        formatPercentage(banAdvantage, 3),
+        formattedRoles[role]
     ];
 }
 
@@ -163,6 +169,13 @@ function updateElo(newElo) {
     console.log("Updating elo to: " + newElo);
     elo = newElo;
     getChampionGGData();
+}
+
+function updateFilter(newFilter) {
+    console.log("Updating role filter to: " + newFilter);
+    roleFilter = newFilter;
+    updateChampionTable();
+
 }
 
 function championClicked(data) {
