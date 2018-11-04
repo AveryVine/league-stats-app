@@ -19,6 +19,10 @@ html, body {
     text-align: center;
 }
 
+.filter {
+    margin-right: 4em;
+}
+
 @media (max-width: 300px) {
     .navbar-header {
         float: none;

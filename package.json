@@ -1,7 +1,7 @@
 {
     "name": "league-stats",
     "productName": "League Stats",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "",
     "main": "main.js",
     "scripts": {
@@ -16,6 +16,7 @@
         "jshint": "^2.9.6"
     },
     "dependencies": {
+        "datatables.net": "^1.10.19",
         "jquery": "^3.2.1"
     },
     "build": {
@@ -25,7 +26,7 @@
         "electronVersion": "2.0.8",
         "asar": true,
         "directories": {
-            "app": "/Users/AveryVine/Documents/Code/Electron/League Stats",
+            "app": "/Users/averyvine/Documents/Code/Electron/League Stats",
             "output": "dist"
         },
         "mac": {

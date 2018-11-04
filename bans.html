@@ -32,7 +32,7 @@
     <div id="content">
         <div id="headerStuffContainer" class="container">
             <h1>Champions</h1>
-            <label>
+            <label class="filter">
                 Elo Selection:
                 <select onchange="updateElo(this.value.toUpperCase())">
                     <option>Bronze</option>
@@ -40,6 +40,17 @@
                     <option>Gold</option>
                     <option selected>Platinum</option>
                     <option>Platinum+</option>
+                </select>
+            </label>
+            <label class="filter">
+                Filter by Role:
+                <select onchange="updateFilter(this.value.toUpperCase())">
+                    <option selected>All</option>
+                    <option>Top</option>
+                    <option>Jungle</option>
+                    <option>Mid</option>
+                    <option>Bot</option>
+                    <option>Support</option>
                 </select>
             </label>
         </div>
@@ -53,6 +64,7 @@
                         <th>Play Rate</th>
                         <th>Ban Rate</th>
                         <th>Ban Advantage</th>
+                        <th>Role</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

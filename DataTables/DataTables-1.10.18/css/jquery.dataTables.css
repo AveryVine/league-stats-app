@@ -1,16 +1,4 @@
 /*
- * This combined file was created by the DataTables downloader builder:
- *   https://datatables.net/download
- *
- * To rebuild or modify this file with the latest versions of the included
- * software please visit:
- *   https://datatables.net/download/#dt/dt-1.10.18
- *
- * Included libraries:
- *   DataTables 1.10.18
- */
-
-/*
  * Table styles
  */
 table.dataTable {
@@ -55,19 +43,19 @@ table.dataTable thead .sorting_desc_disabled {
   background-position: center right;
 }
 table.dataTable thead .sorting {
-  background-image: url("DataTables-1.10.18/images/sort_both.png");
+  background-image: url("../images/sort_both.png");
 }
 table.dataTable thead .sorting_asc {
-  background-image: url("DataTables-1.10.18/images/sort_asc.png");
+  background-image: url("../images/sort_asc.png");
 }
 table.dataTable thead .sorting_desc {
-  background-image: url("DataTables-1.10.18/images/sort_desc.png");
+  background-image: url("../images/sort_desc.png");
 }
 table.dataTable thead .sorting_asc_disabled {
-  background-image: url("DataTables-1.10.18/images/sort_asc_disabled.png");
+  background-image: url("../images/sort_asc_disabled.png");
 }
 table.dataTable thead .sorting_desc_disabled {
-  background-image: url("DataTables-1.10.18/images/sort_desc_disabled.png");
+  background-image: url("../images/sort_desc_disabled.png");
 }
 table.dataTable tbody tr {
   background-color: #ffffff;
@@ -458,5 +446,3 @@ table.dataTable td {
     margin-top: 0.5em;
   }
 }
-
-
